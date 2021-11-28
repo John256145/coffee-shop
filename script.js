@@ -47,6 +47,24 @@ xhr.onreadystatechange = function () {
 xhr.send();
 }
 
+function fetchInventory() {
+    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Inventory?maxRecords=9&view=Grid%20view";
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+
+    xhr.setRequestHeader("Authorization", "Bearer " + airtableApiKey);
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            console.log(xhr.status);
+            localStorage.setItem("inventoryData",xhr.responseText);
+            fetchUsers();
+   }};
+
+   xhr.send();
+}
+
 function checkIfExists(response, emailInput, passwordInput) {
     var login = false;
     var sample = `{"records":[{"id":"recH49qI6naHBHYZ2","fields":{"firstname":"John","lastname":"Doe","address":"1234 North Ave","phone":"7735550000","email":"idk@example.com","userid":9,"password":"password","points":0,"creditcard":"1738","isadmin":true},"createdTime":"2021-11-27T20:59:34.000Z"}]}`;
@@ -98,6 +116,18 @@ function addProfileData() {
             if (!isAdmin) {
                 var adminData = document.getElementById("adminInfo");
                 adminData.style.display = "none";
+            } else {
+                var inventoryData = localStorage.getItem("inventoryData");
+                var inputArrayData = JSON.parse(inventoryData).records;
+                document.body.innerHTML = document.body.innerHTML.replace(/XBVG1/g, String(inputArrayData[0].fields.quantity));
+                document.body.innerHTML = document.body.innerHTML.replace(/XBVG2/g, String(inputArrayData[1].fields.quantity));
+                document.body.innerHTML = document.body.innerHTML.replace(/XBVG3/g, String(inputArrayData[2].fields.quantity));
+                document.body.innerHTML = document.body.innerHTML.replace(/XDNT1/g, String(inputArrayData[3].fields.quantity));
+                document.body.innerHTML = document.body.innerHTML.replace(/XDNT2/g, String(inputArrayData[4].fields.quantity));
+                document.body.innerHTML = document.body.innerHTML.replace(/XDNT3/g, String(inputArrayData[5].fields.quantity));
+                document.body.innerHTML = document.body.innerHTML.replace(/XBGL1/g, String(inputArrayData[6].fields.quantity));
+                document.body.innerHTML = document.body.innerHTML.replace(/XBGL2/g, String(inputArrayData[7].fields.quantity));
+                document.body.innerHTML = document.body.innerHTML.replace(/XBGL3/g, String(inputArrayData[8].fields.quantity));
             }
 
         }
