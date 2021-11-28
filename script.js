@@ -77,6 +77,32 @@ function getUser() {
     return localStorage.getItem("currentUser");
 }
 
+function signOut() {
+    localStorage.clear();
+}
+
+function addProfileData() {
+    var currentUser = localStorage.getItem("currentUser");
+    var userData = localStorage.getItem("currentUserData");
+    var isAdmin = false;
+    var inputArray = JSON.parse(userData).records;
+    for (const element of inputArray) {
+        if(element.fields.userid == currentUser) {
+            isAdmin = element.fields.isadmin;
+            document.body.innerHTML = document.body.innerHTML.replace(/XFN/g, String(element.fields.firstname));
+            document.body.innerHTML = document.body.innerHTML.replace(/XLN/g, String(element.fields.lastname));
+            document.body.innerHTML = document.body.innerHTML.replace(/XAD/g, String(element.fields.address));
+            document.body.innerHTML = document.body.innerHTML.replace(/XPN/g, String(element.fields.phone));
+            document.body.innerHTML = document.body.innerHTML.replace(/XEM/g, String(element.fields.email));
+            document.body.innerHTML = document.body.innerHTML.replace(/XPT/g, String(element.fields.points));
+            if (!isAdmin) {
+                var adminData = document.getElementById("adminInfo");
+                adminData.style.display = "none";
+            }
+
+        }
+    }
+}
 
 function addUser(firstName, lastName, email, password, cc, phoneNumber, address, isAdmin) {
     var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Users";

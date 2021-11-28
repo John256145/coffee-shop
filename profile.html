@@ -10,10 +10,12 @@
     <title>Cofveve</title>
 </head>
 
+<body onload="addProfileData()">
 <body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
+        <script src="script.js"></script>
     <div class="container-fluid" style="background-image: url('background.png');">
         <div class="row">
             <div class="col-12 p-0">
@@ -24,6 +26,11 @@
                                 <img src="backsmall.png" class="rounded float-end" alt="Back Image">
                             </a>
                             <h1 class="card-title">PROFILE</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">First Name: XFN</h6>
+                                <h6 class="card-subtitle mb-2 text-muted">Last Name: XLN</h6>
+                                <h6 class="card-subtitle mb-2 text-muted">Address: XAD</h6>
+                                <h6 class="card-subtitle mb-2 text-muted">Phone: XPN</h6>
+                                <h6 class="card-subtitle mb-2 text-muted">Email: XEM</h6>
                                 <h6 class="card-subtitle mb-2 text-muted">Available Points: XPT</h6>
 
                                 <!-- <h6 class="card-subtitle mb-2 text-muted">Nearby Shops: 249 West Dank Ave, 5298 North
@@ -38,15 +45,17 @@
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </form>
 
-                                <div class="container">
+                                <div class="container" id = "adminInfo">
                                     <h6></br>STOCK:</h6>
                                     <h6>Beverages: XBVG</h6>
                                     <h6>Donuts: XDNT</h6>
                                     <h6>Bagels: XBGL</h6>
 
                                     <h6></br>Feedback:</h6>
+                                    <h6>no feedback</h6>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Sign out</button>
+                            </br>
+                                <a href="index.html"><button type="submit" class="btn btn-primary" onclick="signOut()">Sign out</button></a>
                         </div>
                     </div>
                 </div>
