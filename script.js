@@ -16,6 +16,49 @@ function loginButtonTemp() {
 
 }
 
+// function replaceUserWelcome() {
+//     document.body.innerHTML = document.body.innerHTML.replace(/User!/g, localStorage.getItem("currentUserName"));
+// }
+
+function addMenuData() {
+    document.body.innerHTML = document.body.innerHTML.replace(/User!/g, localStorage.getItem("currentUserName"));
+
+    var inventoryData = localStorage.getItem("inventoryData");
+    var inputArrayData = JSON.parse(inventoryData).records;
+    document.body.innerHTML = document.body.innerHTML.replace(/User!/g, localStorage.getItem("currentUserName"));
+
+    document.body.innerHTML = document.body.innerHTML.replace(/C1PR/g, inputArrayData[0].fields.price);
+    document.body.innerHTML = document.body.innerHTML.replace(/C1PT/g, inputArrayData[0].fields.pointvalue);
+    document.body.innerHTML = document.body.innerHTML.replace(/C2PR/g, inputArrayData[1].fields.price);
+    document.body.innerHTML = document.body.innerHTML.replace(/C2PT/g, inputArrayData[1].fields.pointvalue);
+    document.body.innerHTML = document.body.innerHTML.replace(/C3PR/g, inputArrayData[2].fields.price);
+    document.body.innerHTML = document.body.innerHTML.replace(/C3PT/g, inputArrayData[2].fields.pointvalue);
+    document.body.innerHTML = document.body.innerHTML.replace(/D1PR/g, inputArrayData[3].fields.price);
+    document.body.innerHTML = document.body.innerHTML.replace(/D1PT/g, inputArrayData[3].fields.pointvalue);
+    document.body.innerHTML = document.body.innerHTML.replace(/D2PR/g, inputArrayData[4].fields.price);
+    document.body.innerHTML = document.body.innerHTML.replace(/D2PT/g, inputArrayData[4].fields.pointvalue);
+    document.body.innerHTML = document.body.innerHTML.replace(/D3PR/g, inputArrayData[5].fields.price);
+    document.body.innerHTML = document.body.innerHTML.replace(/D3PT/g, inputArrayData[5].fields.pointvalue);
+    document.body.innerHTML = document.body.innerHTML.replace(/B1PR/g, inputArrayData[6].fields.price);
+    document.body.innerHTML = document.body.innerHTML.replace(/B1PT/g, inputArrayData[6].fields.pointvalue);
+    document.body.innerHTML = document.body.innerHTML.replace(/B2PR/g, inputArrayData[7].fields.price);
+    document.body.innerHTML = document.body.innerHTML.replace(/B2PT/g, inputArrayData[7].fields.pointvalue);
+    document.body.innerHTML = document.body.innerHTML.replace(/B3PR/g, inputArrayData[8].fields.price);
+    document.body.innerHTML = document.body.innerHTML.replace(/B3PT/g, inputArrayData[8].fields.pointvalue);
+
+    document.getElementById("coffee1Cart").addEventListener("click", function() {
+        arrJson = localStorage.getItem("cart");
+        arr = JSON.parse(arrJson);
+        arr.push("C1");
+        localStorage.setItem("cart", JSON.stringify(arr))
+        alert("Hot Coffee added to cart.");
+    }, false);
+}
+
+function addToCart(selection) {
+    console.log(selection);
+}
+
 function addUserfromForm() {
     var firstName=document.getElementById("firstNameInput").value;
     var lastName = document.getElementById("lastNameInput").value;
@@ -48,6 +91,7 @@ xhr.send();
 }
 
 function fetchInventory() {
+    localStorage.setItem("cart", JSON.stringify([]));
     var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Inventory?maxRecords=9&view=Grid%20view";
 
     var xhr = new XMLHttpRequest();
@@ -74,6 +118,7 @@ function checkIfExists(response, emailInput, passwordInput) {
         if(element.fields.email == emailInput && element.fields.password == passwordInput) {
             login = true;
             userId = element.fields.userid;
+            localStorage.setItem("currentUserName", element.fields.firstname);
             break;
         }
     }
