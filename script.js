@@ -46,12 +46,76 @@ function addMenuData() {
     document.body.innerHTML = document.body.innerHTML.replace(/B3PR/g, inputArrayData[8].fields.price);
     document.body.innerHTML = document.body.innerHTML.replace(/B3PT/g, inputArrayData[8].fields.pointvalue);
 
-    document.getElementById("coffee1Cart").addEventListener("click", function() {
+    document.getElementById("coffee1cart").addEventListener("click", function() {
         arrJson = localStorage.getItem("cart");
         arr = JSON.parse(arrJson);
         arr.push("C1");
         localStorage.setItem("cart", JSON.stringify(arr))
         alert("Hot Coffee added to cart.");
+    }, false);
+
+    document.getElementById("coffee2cart").addEventListener("click", function() {
+        arrJson = localStorage.getItem("cart");
+        arr = JSON.parse(arrJson);
+        arr.push("C2");
+        localStorage.setItem("cart", JSON.stringify(arr))
+        alert("Iced Tea added to cart.");
+    }, false);
+
+    document.getElementById("coffee3cart").addEventListener("click", function() {
+        arrJson = localStorage.getItem("cart");
+        arr = JSON.parse(arrJson);
+        arr.push("C3");
+        localStorage.setItem("cart", JSON.stringify(arr))
+        alert("Iced Coffee added to cart.");
+    }, false);
+
+    document.getElementById("donut1cart").addEventListener("click", function() {
+        arrJson = localStorage.getItem("cart");
+        arr = JSON.parse(arrJson);
+        arr.push("D1");
+        localStorage.setItem("cart", JSON.stringify(arr))
+        alert("Vanilla Donut added to cart.");
+    }, false);
+
+    document.getElementById("donut2cart").addEventListener("click", function() {
+        arrJson = localStorage.getItem("cart");
+        arr = JSON.parse(arrJson);
+        arr.push("D2");
+        localStorage.setItem("cart", JSON.stringify(arr))
+        alert("Strawberry Donut added to cart.");
+    }, false);
+
+    document.getElementById("donut3cart").addEventListener("click", function() {
+        arrJson = localStorage.getItem("cart");
+        arr = JSON.parse(arrJson);
+        arr.push("D3");
+        localStorage.setItem("cart", JSON.stringify(arr))
+        alert("Chocolate Donut added to cart.");
+    }, false);
+
+    document.getElementById("bagel1cart").addEventListener("click", function() {
+        arrJson = localStorage.getItem("cart");
+        arr = JSON.parse(arrJson);
+        arr.push("B1");
+        localStorage.setItem("cart", JSON.stringify(arr))
+        alert("Bagel added to cart.");
+    }, false);
+
+    document.getElementById("bagel2cart").addEventListener("click", function() {
+        arrJson = localStorage.getItem("cart");
+        arr = JSON.parse(arrJson);
+        arr.push("B2");
+        localStorage.setItem("cart", JSON.stringify(arr))
+        alert("English muffin added to cart.");
+    }, false);
+
+    document.getElementById("bagel3cart").addEventListener("click", function() {
+        arrJson = localStorage.getItem("cart");
+        arr = JSON.parse(arrJson);
+        arr.push("B3");
+        localStorage.setItem("cart", JSON.stringify(arr))
+        alert("Croissant added to cart.");
     }, false);
 }
 
