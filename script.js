@@ -1,4 +1,4 @@
-function loginButton() {
+function loginButtonTemp() {
     // document.getElementById("loginButton").onclick = function () {
     //         // location.href = "www.google.com";
     //     };
@@ -31,7 +31,8 @@ function addUserfromForm() {
 
 function fetchUsers() {
     var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Users?maxRecords=3&view=Grid%20view";
-
+    var email = document.getElementById("exampleInputEmail1").value;
+    var password = document.getElementById("exampleInputPassword1").value;
 var xhr = new XMLHttpRequest();
 xhr.open("GET", url);
 
@@ -40,11 +41,33 @@ xhr.setRequestHeader("Authorization", "Bearer " + airtableApiKey);
 xhr.onreadystatechange = function () {
    if (xhr.readyState === 4) {
       console.log(xhr.status);
-      console.log(xhr.responseText);
+      checkIfExists(xhr.responseText, email, password);
    }};
 
 xhr.send();
 }
+
+function checkIfExists(response, emailInput, passwordInput) {
+    var login = false;
+    var sample = `{"records":[{"id":"recH49qI6naHBHYZ2","fields":{"firstname":"John","lastname":"Doe","address":"1234 North Ave","phone":"7735550000","email":"idk@example.com","userid":9,"password":"password","points":0,"creditcard":"1738","isadmin":true},"createdTime":"2021-11-27T20:59:34.000Z"}]}`;
+    var inputArray = JSON.parse(response).records;
+    for (const element of inputArray) {
+        // console.log(element.fields.email);
+        // console.log(element.fields.password);
+        if(element.fields.email == emailInput && element.fields.password == passwordInput) {
+            login = true;
+            break;
+        }
+    }
+    if(login) {
+        console.log("match found!");
+        window.location.replace("menu.html");
+    } else {
+        console.log("match not found");
+        alert("We cannot find an account with the information you provided. Please try again.");
+    }
+}
+
 
 function addUser(firstName, lastName, email, password, cc, phoneNumber, address, isAdmin) {
     var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Users";
