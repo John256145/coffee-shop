@@ -51,21 +51,30 @@ function checkIfExists(response, emailInput, passwordInput) {
     var login = false;
     var sample = `{"records":[{"id":"recH49qI6naHBHYZ2","fields":{"firstname":"John","lastname":"Doe","address":"1234 North Ave","phone":"7735550000","email":"idk@example.com","userid":9,"password":"password","points":0,"creditcard":"1738","isadmin":true},"createdTime":"2021-11-27T20:59:34.000Z"}]}`;
     var inputArray = JSON.parse(response).records;
+    var userId = 0;
     for (const element of inputArray) {
-        // console.log(element.fields.email);
-        // console.log(element.fields.password);
         if(element.fields.email == emailInput && element.fields.password == passwordInput) {
             login = true;
+            userId = element.fields.userid;
             break;
         }
     }
     if(login) {
         console.log("match found!");
+        localStorage.setItem("currentUser",userId);
+        localStorage.setItem("currentUserData", response);
+        console.log(String(userId) + " is the userID");
         window.location.replace("menu.html");
     } else {
         console.log("match not found");
         alert("We cannot find an account with the information you provided. Please try again.");
     }
+}
+
+function getUser() {
+    // window.onload = localStorage.getItem("currentUser");
+    // window.onload = alert(localStorage.getItem("storageName"));
+    return localStorage.getItem("currentUser");
 }
 
 
