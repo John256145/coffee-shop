@@ -10,10 +10,11 @@
     <title>Cofveve</title>
 </head>
 
-<body>
+<body onload="addCartData()">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
+    <script src="script.js"></script>
     <div class="container-fluid" style="background-image: url('background.png');">
         <div class="row">
             <div class="col-12 p-0">
@@ -25,41 +26,46 @@
                                     <div class="col-12">
 
 
-                                        <img src="profile.png" class="rounded float-end" alt="Cart Image">
+                                        <a href="profile.html">
+                                            <img src="profile.png" class="rounded float-end" alt="Cart Image">
+                                        </a>
                                         <a href="menu.html">
                                             <img src="backsmall.png" class="rounded float-end" alt="Back Image">
                                         </a>
 
-                                        <img src="coffee1.png" class="rounded float-start" alt="Regular Coffee">
+                                        <!-- <img src="coffee1.png" class="rounded float-start" alt="Regular Coffee"> -->
                                         <h1>CHECKOUT</h1>
+                                        <h6>Your cart: (<a href="#" onclick="clearCart()">Clear</a>)</h6>
+                                        <div class="col-sm-10" id = "cartList"></div>
+
                                         <div class="mb-3 row">
                                             <label for="staticEmail" class="col-sm-2 col-form-label">Total Cost:</label>
                                             <div class="col-sm-10">
-                                                <input type="text" readonly class="form-control-plaintext"
-                                                    id="staticEmail" value="email@example.com">
+                                            </br>
+                                                <h6>XTC</h6>
                                             </div>
                                         </div>
-                                        <form>
+                                        <!-- <form> -->
                                             <div class="mb-3 row">
                                                 <label for="staticEmail" class="col-sm-2 col-form-label">Earnable
                                                     Points:</label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" readonly class="form-control-plaintext"
-                                                        id="staticEmail" value="email@example.com">
+                                                    </br>
+                                                    <h6>XEP</h6>
                                                 </div>
                                             </div>
                                             <div class="mb-3 row">
                                                 <label for="inputPassword" class="col-sm-2 col-form-label">Redeem Points
                                                     for
-                                                    Discount:</label>
+                                                    Discount: (optional)</label>
                                                 <div class="col-sm-10">
-                                                    <input type="password" class="form-control" id="inputPassword">
+                                                    <input type="number" class="form-control" id="inputPointsRedeem">
                                                 </div>
                                             </div>
                                             <div class="mb-3 row">
                                                 <label for="inputPassword" class="col-sm-2 col-form-label">Tip:</label>
                                                 <div class="col-sm-10">
-                                                    <input type="password" class="form-control" id="inputPassword">
+                                                    <input type="text" class="form-control" id="inputTip">
                                                 </div>
                                             </div>
                                             <fieldset class="row mb-3">
@@ -88,7 +94,8 @@
                                                     </div>
                                                 </div>
                                             </fieldset>
-                                        </form>
+                                            <a href="menu.html"><button class="btn btn-primary">Place Order</button></a>
+                                        <!-- </form> -->
                                     </div>
 
                                 </div>

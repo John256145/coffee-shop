@@ -49,7 +49,7 @@ function addMenuData() {
     document.getElementById("coffee1cart").addEventListener("click", function() {
         arrJson = localStorage.getItem("cart");
         arr = JSON.parse(arrJson);
-        arr.push("C1");
+        arr.push("coffee1");
         localStorage.setItem("cart", JSON.stringify(arr))
         alert("Hot Coffee added to cart.");
     }, false);
@@ -57,7 +57,7 @@ function addMenuData() {
     document.getElementById("coffee2cart").addEventListener("click", function() {
         arrJson = localStorage.getItem("cart");
         arr = JSON.parse(arrJson);
-        arr.push("C2");
+        arr.push("coffee2");
         localStorage.setItem("cart", JSON.stringify(arr))
         alert("Iced Tea added to cart.");
     }, false);
@@ -65,7 +65,7 @@ function addMenuData() {
     document.getElementById("coffee3cart").addEventListener("click", function() {
         arrJson = localStorage.getItem("cart");
         arr = JSON.parse(arrJson);
-        arr.push("C3");
+        arr.push("coffee3");
         localStorage.setItem("cart", JSON.stringify(arr))
         alert("Iced Coffee added to cart.");
     }, false);
@@ -73,7 +73,7 @@ function addMenuData() {
     document.getElementById("donut1cart").addEventListener("click", function() {
         arrJson = localStorage.getItem("cart");
         arr = JSON.parse(arrJson);
-        arr.push("D1");
+        arr.push("donut1");
         localStorage.setItem("cart", JSON.stringify(arr))
         alert("Vanilla Donut added to cart.");
     }, false);
@@ -81,7 +81,7 @@ function addMenuData() {
     document.getElementById("donut2cart").addEventListener("click", function() {
         arrJson = localStorage.getItem("cart");
         arr = JSON.parse(arrJson);
-        arr.push("D2");
+        arr.push("donut2");
         localStorage.setItem("cart", JSON.stringify(arr))
         alert("Strawberry Donut added to cart.");
     }, false);
@@ -89,7 +89,7 @@ function addMenuData() {
     document.getElementById("donut3cart").addEventListener("click", function() {
         arrJson = localStorage.getItem("cart");
         arr = JSON.parse(arrJson);
-        arr.push("D3");
+        arr.push("donut3");
         localStorage.setItem("cart", JSON.stringify(arr))
         alert("Chocolate Donut added to cart.");
     }, false);
@@ -97,7 +97,7 @@ function addMenuData() {
     document.getElementById("bagel1cart").addEventListener("click", function() {
         arrJson = localStorage.getItem("cart");
         arr = JSON.parse(arrJson);
-        arr.push("B1");
+        arr.push("bagel1");
         localStorage.setItem("cart", JSON.stringify(arr))
         alert("Bagel added to cart.");
     }, false);
@@ -105,7 +105,7 @@ function addMenuData() {
     document.getElementById("bagel2cart").addEventListener("click", function() {
         arrJson = localStorage.getItem("cart");
         arr = JSON.parse(arrJson);
-        arr.push("B2");
+        arr.push("bagel2");
         localStorage.setItem("cart", JSON.stringify(arr))
         alert("English muffin added to cart.");
     }, false);
@@ -113,14 +113,52 @@ function addMenuData() {
     document.getElementById("bagel3cart").addEventListener("click", function() {
         arrJson = localStorage.getItem("cart");
         arr = JSON.parse(arrJson);
-        arr.push("B3");
+        arr.push("bagel3");
         localStorage.setItem("cart", JSON.stringify(arr))
         alert("Croissant added to cart.");
     }, false);
 }
 
-function addToCart(selection) {
-    console.log(selection);
+function clearCart() {
+    localStorage.setItem("cart", JSON.stringify([]));
+    location.reload();
+}
+
+function addCartData() {
+
+    var cartArrayJson = localStorage.getItem("cart");
+    var cartArray = JSON.parse(cartArrayJson);
+    var dct = {
+        "coffee1" : "Hot Coffee",
+        "coffee2" : "Iced Tea" ,
+        "coffee3" : "Iced Coffee",
+        "donut1" : "Vanilla Donut",
+        "donut2" : "Strawberry Donut",
+        "donut3" : "Chocolate Donut",
+        "bagel1" : "Bagel",
+        "bagel2" : "English Muffin",
+        "bagel3" : "Croissant"
+    };
+
+    var cartDiv = document.getElementById("cartList");
+    var tempCart = ["Hot Coffee", "Chocolate Donut", "English muffin"];
+    var list = document.createElement("ul");
+    if (cartArray.length == 0) {
+        var anchor = document.createElement("a");
+        anchor.innerText = "(empty)";
+        var elem = document.createElement("li");
+        elem.appendChild(anchor);
+        list.appendChild(elem);
+    }
+    for (var i in cartArray) {
+        var anchor = document.createElement("a");
+        // anchor.href = "#";
+        anchor.innerText =dct[cartArray[i]];
+        var elem = document.createElement("li");
+        elem.appendChild(anchor);
+        list.appendChild(elem);
+    }
+    cartDiv.appendChild(list);
 }
 
 function addUserfromForm() {
