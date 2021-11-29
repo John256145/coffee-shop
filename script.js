@@ -124,8 +124,40 @@ function clearCart() {
     location.reload();
 }
 
-function addCartData() {
+function getPricesOfItems() {
+    var dct = {};
+    var inventoryData = localStorage.getItem("inventoryData");
+    var inputArrayData = JSON.parse(inventoryData).records;
+    for (const element of inputArrayData) {
+        dct[element.fields.item] = element.fields.price
+    }
+    return dct;
+}
 
+function getPointValueOfItems() {
+    var dct = {};
+    var inventoryData = localStorage.getItem("inventoryData");
+    var inputArrayData = JSON.parse(inventoryData).records;
+    for (const element of inputArrayData) {
+        dct[element.fields.item] = element.fields.pointvalue;
+    }
+    return dct;
+}
+
+function numberToCurrency(num) {
+    var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    });
+    return formatter.format(num);
+}
+
+
+function addCartData() {
+    var totalPrice = 0;
+    var totalPoints = 0;
+    var pointsDct = getPointValueOfItems();
+    var pricesDct = getPricesOfItems();
     var cartArrayJson = localStorage.getItem("cart");
     var cartArray = JSON.parse(cartArrayJson);
     var dct = {
@@ -140,8 +172,12 @@ function addCartData() {
         "bagel3" : "Croissant"
     };
 
+    var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    });
+
     var cartDiv = document.getElementById("cartList");
-    var tempCart = ["Hot Coffee", "Chocolate Donut", "English muffin"];
     var list = document.createElement("ul");
     if (cartArray.length == 0) {
         var anchor = document.createElement("a");
@@ -153,12 +189,25 @@ function addCartData() {
     for (var i in cartArray) {
         var anchor = document.createElement("a");
         // anchor.href = "#";
-        anchor.innerText =dct[cartArray[i]];
+        var currentItem = cartArray[i]; //internal name
+        var currentPriceAsStr = pricesDct[currentItem];
+        var currentPriceAsNum = Number(currentPriceAsStr.replace(/[^0-9.-]+/g,""));
+        totalPrice += currentPriceAsNum;
+        totalPoints += pointsDct[currentItem];
+        anchor.innerText =dct[currentItem]; //converting from internal to normal name
         var elem = document.createElement("li");
         elem.appendChild(anchor);
         list.appendChild(elem);
     }
     cartDiv.appendChild(list);
+
+    //adding totals to page
+    var totalPointsHTML = document.getElementById('totalPoints');
+    totalPointsHTML.innerHTML += String(totalPoints);
+
+    var totalCostHTML = document.getElementById('totalCost');
+    totalCostHTML.innerHTML += formatter.format(totalPrice);
+
 }
 
 function addUserfromForm() {
