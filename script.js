@@ -152,6 +152,16 @@ function numberToCurrency(num) {
     return formatter.format(num);
 }
 
+function getUserPoints() {
+    var arr = JSON.parse(localStorage.getItem("currentUserData")).records;
+    var userID = localStorage.getItem("currentUser");
+    for (const element of arr) {
+        if (element.fields.userid == userID) {
+            return element.fields.points;
+        }
+    }
+}
+
 
 function addCartData() {
     var totalPrice = 0;
@@ -204,10 +214,33 @@ function addCartData() {
     //adding totals to page
     var totalPointsHTML = document.getElementById('totalPoints');
     totalPointsHTML.innerHTML += String(totalPoints);
+    localStorage.setItem("currentPointCost", totalPoints);
 
     var totalCostHTML = document.getElementById('totalCost');
     totalCostHTML.innerHTML += formatter.format(totalPrice);
+    localStorage.setItem("currentTotalCost", totalPrice);
 
+    var userPointsHTML = document.getElementById('userPoints');
+    userPointsHTML.innerHTML += getUserPoints();
+
+}
+
+function orderPlaced() {
+    var cartArrayJson = localStorage.getItem("cart");
+    var cartArray = JSON.parse(cartArrayJson);
+    if(cartArray.length == 0) {
+        alert("Your cart is empty.");
+    }
+    else if(document.getElementById("willUsePoints").checked) {
+        var pointCost = localStorage.getItem("currentPointCost");
+        var earnedPoints = Math.floor(localStorage.getItem("currentTotalCost"));
+        console.log("User will earn " + String(earnedPoints) + " points on this purchase");
+        if (pointCost <= getUserPoints()) {
+            console.log("user will use their points to purchase");
+        } else {
+            alert("You do not have enough points to make this purchase.");
+        }
+    }
 }
 
 function addUserfromForm() {

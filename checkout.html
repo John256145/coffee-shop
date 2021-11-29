@@ -44,16 +44,19 @@
                                         </div>
                                         <!-- <form> -->
                                             <div class="mb-3 row">
-                                                <label for="staticEmail" class="col-sm-2 col-form-label">Earnable
-                                                    Points:</label>
+                                                <label for="staticEmail" class="col-sm-2 col-form-label">Point cost:</label>
                                                 <div class="col-sm-10" id = "totalPoints"></br></div>
                                             </div>
                                             <div class="mb-3 row">
-                                                <label for="inputPassword" class="col-sm-2 col-form-label">Redeem Points
-                                                    for
-                                                    Discount: (optional)</label>
+                                                <label for="staticEmail" class="col-sm-2 col-form-label">Your
+                                                    Points:</label>
+                                                <div class="col-sm-10" id = "userPoints"></br></div>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <label for="inputPassword" class="col-sm-2 col-form-label">Use your points?: </label>
                                                 <div class="col-sm-10">
-                                                    <input type="number" class="form-control" id="inputPointsRedeem">
+                                                    <br>
+                                                    <input type="checkbox" id="willUsePoints" name="pointSelection">
                                                 </div>
                                             </div>
                                             <div class="mb-3 row">
@@ -88,7 +91,7 @@
                                                     </div>
                                                 </div>
                                             </fieldset>
-                                            <a href="menu.html"><button class="btn btn-primary">Place Order</button></a>
+                                            <button class="btn btn-primary" onclick="orderPlaced()">Place Order</button>
                                         <!-- </form> -->
                                     </div>
 
