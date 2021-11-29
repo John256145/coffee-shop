@@ -226,8 +226,21 @@ function addCartData() {
 }
 
 function orderPlaced() {
+    var itemNameToId = {
+            "coffee1" : "recoqIPWGwb6nQvuc",
+            "coffee2" : "recyvLZO2NaEjFYXM",
+            "coffee3" : "rec4O7jv0OWI03B8r",
+            "donut1" : "recSIhpldB6zjai9W",
+            "donut2" : "recXE48LUVJe73U0Y",
+            "donut3" : "recx2cQFrvlI71W1V",
+            "bagel1" : "recGIQwAIEs0dNYmK",
+            "bagel2" : "recVWrQmU4M7PBpNu",
+            "bagel3" : "recV957czTp5DXzfX"
+    };
+    var data = { "records" : [] }; //will be sent to api
     var cartArrayJson = localStorage.getItem("cart");
     var cartArray = JSON.parse(cartArrayJson);
+    var cartDct = cartToDct(cartArray);
     if(cartArray.length == 0) {
         alert("Your cart is empty.");
     }
@@ -240,7 +253,63 @@ function orderPlaced() {
         } else {
             alert("You do not have enough points to make this purchase.");
         }
+    } else { //user will pay with cc
+        var arr = Object.entries(cartDct);
+        for(var i in arr) {
+            var item = arr[i][0];
+            var count = arr[i][1];
+            var newRecord = {
+                "id" : itemNameToId[item],
+                "fields" : {
+                    "quantity" : getQuantityOfItem(item) - count
+                }
+            };
+            data["records"].push(newRecord);
+        }
+        console.log(data);
+        updateInventory(JSON.stringify(data));
     }
+}
+
+function getQuantityOfItem(itemName) {
+    var inventoryData = localStorage.getItem("inventoryData");
+    var inputArrayData = JSON.parse(inventoryData).records;
+    //inputArrayData[0].fields.quantity
+    for(const element of inputArrayData) {
+        if(element.fields.item == itemName) {
+            return element.fields.quantity;
+        }
+    }
+}
+
+function cartToDct(cartArray) {
+    dct = {};
+    for (var i in cartArray) {
+        item = cartArray[i];
+        if (item in dct) {
+            dct[item] += 1;
+        } else {
+            dct[item] = 1;
+        }
+    }
+    return dct;
+}
+
+function updateInventory(data) {
+    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Inventory";
+    var xhr = new XMLHttpRequest();
+    xhr.open("PATCH", url);
+
+    xhr.setRequestHeader("Authorization", "Bearer " + airtableApiKey);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            // console.log(xhr.status);
+            console.log(xhr.responseText);
+            fetchInventoryCartUpdate();
+        }};
+    xhr.send(data);
 }
 
 function addUserfromForm() {
@@ -288,6 +357,26 @@ function fetchInventory() {
             console.log(xhr.status);
             localStorage.setItem("inventoryData",xhr.responseText);
             fetchUsers();
+   }};
+
+   xhr.send();
+}
+
+function fetchInventoryCartUpdate() {
+    localStorage.setItem("cart", JSON.stringify([]));
+    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Inventory?maxRecords=9&view=Grid%20view";
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+
+    xhr.setRequestHeader("Authorization", "Bearer " + airtableApiKey);
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            console.log(xhr.status);
+            localStorage.setItem("inventoryData",xhr.responseText);
+            alert("Order placed!");
+            window.location.replace("menu.html");
    }};
 
    xhr.send();
