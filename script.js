@@ -162,6 +162,52 @@ function addMenuData() {
         }
 
     }, false);
+
+    document.getElementById("coffee1star").addEventListener("click", function() {
+        localStorage.setItem("reviewSelection", "coffee1");
+        window.location.replace("review.html");
+    }, false);
+
+    document.getElementById("coffee2star").addEventListener("click", function() {
+        localStorage.setItem("reviewSelection", "coffee2");
+        window.location.replace("review.html");
+    }, false);
+
+    document.getElementById("coffee3star").addEventListener("click", function() {
+        localStorage.setItem("reviewSelection", "coffee3");
+        window.location.replace("review.html");
+    }, false);
+
+    document.getElementById("donut1star").addEventListener("click", function() {
+        localStorage.setItem("reviewSelection", "donut1");
+        window.location.replace("review.html");
+    }, false);
+
+    document.getElementById("donut2star").addEventListener("click", function() {
+        localStorage.setItem("reviewSelection", "donut2");
+        window.location.replace("review.html");
+    }, false);
+
+    document.getElementById("donut3star").addEventListener("click", function() {
+        localStorage.setItem("reviewSelection", "donut3");
+        window.location.replace("review.html");
+    }, false);
+
+    document.getElementById("bagel1star").addEventListener("click", function() {
+        localStorage.setItem("reviewSelection", "bagel1");
+        window.location.replace("review.html");
+    }, false);
+
+    document.getElementById("bagel2star").addEventListener("click", function() {
+        localStorage.setItem("reviewSelection", "bagel2");
+        window.location.replace("review.html");
+    }, false);
+
+    document.getElementById("bagel3star").addEventListener("click", function() {
+        localStorage.setItem("reviewSelection", "bagel3");
+        window.location.replace("review.html");
+    }, false);
+
 }
 
 function clearCart() {
@@ -464,6 +510,7 @@ function fetchInventory() {
             console.log(xhr.status);
             localStorage.setItem("inventoryData",xhr.responseText);
             fetchUsers();
+            fetchReviews();
    }};
 
    xhr.send();
@@ -535,6 +582,44 @@ function signOut() {
     localStorage.clear();
 }
 
+function loadReviewPage() {
+    var reviewDiv = document.getElementById("reviewList");
+    var list = document.createElement("ul");
+    var itemSelection = localStorage.getItem("reviewSelection");
+    var reviewArray = JSON.parse(localStorage.getItem("reviews")).records;
+    for (const element of reviewArray) {
+        if(element.fields.item == itemSelection) { //only consider reviews of the current selection
+            var review = element.fields.review;
+            var name = element.fields.firstname;
+            var anchor = document.createElement("a");
+            anchor.innerText = name + `: "`  + review + `"`;
+            var elem = document.createElement("li");
+            elem.appendChild(anchor);
+            list.appendChild(elem);
+        }
+
+    }
+    reviewDiv.appendChild(list);
+}
+
+function fetchReviews() {
+    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Reviews?maxRecords=3&view=Grid%20view";
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+
+    xhr.setRequestHeader("Authorization", "Bearer " + airtableApiKey);
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            console.log(xhr.status);
+            console.log(xhr.responseText);
+            localStorage.setItem("reviews", xhr.responseText);
+    }};
+
+    xhr.send();
+}
+
 function addProfileData() {
     var currentUser = localStorage.getItem("currentUser");
     var userData = localStorage.getItem("currentUserData");
@@ -604,41 +689,4 @@ var data = `{
 }`;
 
 xhr.send(data);
-}
-
-function addDummyUser() {
-    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Users";
-
-var xhr = new XMLHttpRequest();
-xhr.open("POST", url);
-
-xhr.setRequestHeader("Authorization", "Bearer " + airtableApiKey);
-xhr.setRequestHeader("Content-Type", "application/json");
-
-xhr.onreadystatechange = function () {
-   if (xhr.readyState === 4) {
-      console.log(xhr.status);
-      console.log(xhr.responseText);
-   }};
-
-var data = `{
-  "records": [
-    {
-      "fields": {
-          "firstname": "Jane",
-          "lastname": "Doe",
-          "address": "4321 North Ave",
-          "phone": "7735550000",
-          "email": "idk@example.com",
-          "password": "password",
-          "points": 0,
-          "creditcard": "1738",
-          "isadmin": false
-      }
-    }
-  ]
-}`;
-
-xhr.send(data);
-
 }
