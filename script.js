@@ -306,6 +306,10 @@ function addCartData() {
     var totalPointsHTML = document.getElementById('totalPoints');
     totalPointsHTML.innerHTML += String(totalPoints);
     localStorage.setItem("currentPointCost", totalPoints);
+    //if user has enough points, make points text green
+    if(totalPoints <= getUserPoints() && totalPoints > 0) {
+        totalPointsHTML.style.color = "#00ff00";
+    }
 
     var totalCostHTML = document.getElementById('totalCost');
     totalCostHTML.innerHTML += formatter.format(totalPrice);
@@ -313,6 +317,7 @@ function addCartData() {
 
     var userPointsHTML = document.getElementById('userPoints');
     userPointsHTML.innerHTML += getUserPoints();
+
 
 }
 
