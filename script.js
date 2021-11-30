@@ -558,10 +558,16 @@ function checkIfExists(response, emailInput, passwordInput) {
     var userId = 0;
     for (const element of inputArray) {
         if(element.fields.email == emailInput && element.fields.password == passwordInput) {
-            login = true;
-            userId = element.fields.userid;
-            localStorage.setItem("currentUserName", element.fields.firstname);
-            break;
+            if (element.fields.isblocked) {
+                alert("You are blocked from using the application.");
+                return;
+            } else {
+                login = true;
+                userId = element.fields.userid;
+                localStorage.setItem("currentUserName", element.fields.firstname);
+                break;
+            }
+
         }
     }
     if(login) {
