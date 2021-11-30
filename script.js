@@ -293,16 +293,19 @@ function orderPlaced() {
 
     var earnedPoints = Math.floor(localStorage.getItem("currentTotalCost"));
     console.log("User will earn " + String(earnedPoints) + " points on this purchase");
+    localStorage.setItem("earnedPoints", earnedPoints);
     var usingPoints = document.getElementById("willUsePoints").checked;
     if(usingPoints) {
         var pointCost = localStorage.getItem("currentPointCost");
-
         if (pointCost <= getUserPoints()) {
             console.log("user will use their points to purchase");
+            setUserPoints( (getUserPoints() - pointCost) + earnedPoints )
         } else {
             alert("You do not have enough points to make this purchase.");
             return;
         }
+    } else {
+        setUserPoints(getUserPoints() + earnedPoints);
     }
 
     var arr = Object.entries(cartDct);
@@ -481,10 +484,16 @@ function fetchInventoryCartUpdate() {
             console.log(xhr.status);
             localStorage.setItem("inventoryData",xhr.responseText);
             var tip = Number(document.getElementById("inputTip").value);
-            var total = Number(localStorage.getItem("currentTotalCost")) + tip;
-            alert("Your order has been placed! Total: $" + String(total));
+            var total = 0;
+            if(document.getElementById("willUsePoints").checked) {
+                total = tip; //user is using points, so will be charged just for tipping if they do
+            } else {
+                total = Number(localStorage.getItem("currentTotalCost")) + tip; //user is not using points.
+            }
+            alert("Your order has been placed! Total: $" + String(total) + ". You earned " + String(localStorage.getItem("earnedPoints")) + " points.");
             localStorage.setItem("currentPointCost", 0);
             localStorage.setItem("currentTotalCost", 0);
+            localStorage.setItem("earnedPoints", 0);
             window.location.replace("menu.html");
    }};
 
