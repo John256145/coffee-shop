@@ -288,32 +288,38 @@ function orderPlaced() {
     var cartDct = cartToDct(cartArray);
     if(cartArray.length == 0) {
         alert("Your cart is empty.");
+        return;
     }
-    else if(document.getElementById("willUsePoints").checked) {
+
+    var earnedPoints = Math.floor(localStorage.getItem("currentTotalCost"));
+    console.log("User will earn " + String(earnedPoints) + " points on this purchase");
+    var usingPoints = document.getElementById("willUsePoints").checked;
+    if(usingPoints) {
         var pointCost = localStorage.getItem("currentPointCost");
-        var earnedPoints = Math.floor(localStorage.getItem("currentTotalCost"));
-        console.log("User will earn " + String(earnedPoints) + " points on this purchase");
+
         if (pointCost <= getUserPoints()) {
             console.log("user will use their points to purchase");
         } else {
             alert("You do not have enough points to make this purchase.");
+            return;
         }
-    } else { //user will pay with cc
-        var arr = Object.entries(cartDct);
-        for(var i in arr) {
-            var item = arr[i][0];
-            var count = arr[i][1];
-            var newRecord = {
-                "id" : itemNameToId[item],
-                "fields" : {
-                    "quantity" : getQuantityOfItem(item) - count
-                }
-            };
-            data["records"].push(newRecord);
-        }
-        console.log(data);
-        updateInventory(JSON.stringify(data));
     }
+
+    var arr = Object.entries(cartDct);
+    for(var i in arr) {
+        var item = arr[i][0];
+        var count = arr[i][1];
+        var newRecord = {
+            "id" : itemNameToId[item],
+            "fields" : {
+                "quantity" : getQuantityOfItem(item) - count
+            }
+        };
+        data["records"].push(newRecord);
+    }
+    console.log(data);
+    updateInventory(JSON.stringify(data));
+
 }
 
 function getQuantityOfItem(itemName) {
@@ -325,6 +331,59 @@ function getQuantityOfItem(itemName) {
             return element.fields.quantity;
         }
     }
+}
+
+function setUserPoints(points) {
+    //points will rewrite current user pointSelection
+    //first get user's internal id
+
+    var currentUser = localStorage.getItem("currentUser");
+    var userData = localStorage.getItem("currentUserData");
+    var internalUserID = "";
+    var inputArray = JSON.parse(userData).records;
+    for (const element of inputArray) {
+        if(element.fields.userid == currentUser) {
+            internalUserID = element.id;
+            break;
+        }
+    }
+    var data = JSON.stringify({"fields" : {"points" : points}});
+
+    //api work
+    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Users/" + internalUserID;
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("PATCH", url);
+
+    xhr.setRequestHeader("Authorization", "Bearer " + airtableApiKey);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            console.log(xhr.status);
+            console.log(xhr.responseText);
+            refreshUserData();
+        }};
+
+
+    xhr.send(data);
+}
+
+function refreshUserData() {
+    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Users?maxRecords=3&view=Grid%20view";
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+    xhr.setRequestHeader("Authorization", "Bearer " + airtableApiKey);
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            console.log(xhr.status);
+            console.log(xhr.responseText);
+            console.log("user data refreshed");
+            localStorage.setItem("currentUserData", xhr.responseText);
+    }};
+
+    xhr.send();
 }
 
 function cartToDct(cartArray) {
