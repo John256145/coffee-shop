@@ -47,75 +47,120 @@ function addMenuData() {
     document.body.innerHTML = document.body.innerHTML.replace(/B3PT/g, inputArrayData[8].fields.pointvalue);
 
     document.getElementById("coffee1cart").addEventListener("click", function() {
-        arrJson = localStorage.getItem("cart");
-        arr = JSON.parse(arrJson);
-        arr.push("coffee1");
-        localStorage.setItem("cart", JSON.stringify(arr))
-        alert("Hot Coffee added to cart.");
+        if (getQuantityOfItem("coffee1") > 0) {
+            arrJson = localStorage.getItem("cart");
+            arr = JSON.parse(arrJson);
+            arr.push("coffee1");
+            localStorage.setItem("cart", JSON.stringify(arr))
+            alert("Hot Coffee added to cart.");
+        } else {
+            alert("Sorry, we are out of Hot Coffee.");
+        }
+
     }, false);
 
     document.getElementById("coffee2cart").addEventListener("click", function() {
-        arrJson = localStorage.getItem("cart");
-        arr = JSON.parse(arrJson);
-        arr.push("coffee2");
-        localStorage.setItem("cart", JSON.stringify(arr))
-        alert("Iced Tea added to cart.");
+        if (getQuantityOfItem("coffee2") > 0) {
+            arrJson = localStorage.getItem("cart");
+            arr = JSON.parse(arrJson);
+            arr.push("coffee2");
+            localStorage.setItem("cart", JSON.stringify(arr))
+            alert("Iced Tea added to cart.");
+        } else {
+            alert("Sorry, we are out of Iced Tea.");
+        }
+
     }, false);
 
     document.getElementById("coffee3cart").addEventListener("click", function() {
-        arrJson = localStorage.getItem("cart");
-        arr = JSON.parse(arrJson);
-        arr.push("coffee3");
-        localStorage.setItem("cart", JSON.stringify(arr))
-        alert("Iced Coffee added to cart.");
+        if (getQuantityOfItem("coffee3") > 0) {
+            arrJson = localStorage.getItem("cart");
+            arr = JSON.parse(arrJson);
+            arr.push("coffee3");
+            localStorage.setItem("cart", JSON.stringify(arr))
+            alert("Iced Coffee added to cart.");
+        } else {
+            alert("Sorry, we are out of Iced Coffee.");
+        }
+
     }, false);
 
     document.getElementById("donut1cart").addEventListener("click", function() {
-        arrJson = localStorage.getItem("cart");
-        arr = JSON.parse(arrJson);
-        arr.push("donut1");
-        localStorage.setItem("cart", JSON.stringify(arr))
-        alert("Vanilla Donut added to cart.");
+        if (getQuantityOfItem("donut1") > 0) {
+            arrJson = localStorage.getItem("cart");
+            arr = JSON.parse(arrJson);
+            arr.push("donut1");
+            localStorage.setItem("cart", JSON.stringify(arr))
+            alert("Vanilla Donut added to cart.");
+        } else {
+            alert("Sorry, we are out of Vanilla Donuts.");
+        }
+
     }, false);
 
     document.getElementById("donut2cart").addEventListener("click", function() {
-        arrJson = localStorage.getItem("cart");
-        arr = JSON.parse(arrJson);
-        arr.push("donut2");
-        localStorage.setItem("cart", JSON.stringify(arr))
-        alert("Strawberry Donut added to cart.");
+        if (getQuantityOfItem("donut2") > 0) {
+            arrJson = localStorage.getItem("cart");
+            arr = JSON.parse(arrJson);
+            arr.push("donut2");
+            localStorage.setItem("cart", JSON.stringify(arr))
+            alert("Strawberry Donut added to cart.");
+        } else {
+            alert("Sorry, we are out of Strawberry Donuts");
+        }
+
     }, false);
 
     document.getElementById("donut3cart").addEventListener("click", function() {
-        arrJson = localStorage.getItem("cart");
-        arr = JSON.parse(arrJson);
-        arr.push("donut3");
-        localStorage.setItem("cart", JSON.stringify(arr))
-        alert("Chocolate Donut added to cart.");
+        if (getQuantityOfItem("donut3") > 0) {
+            arrJson = localStorage.getItem("cart");
+            arr = JSON.parse(arrJson);
+            arr.push("donut3");
+            localStorage.setItem("cart", JSON.stringify(arr))
+            alert("Chocolate Donut added to cart.");
+        } else {
+            alert("Sorry, we are out of Chocolate Donuts");
+        }
+
     }, false);
 
     document.getElementById("bagel1cart").addEventListener("click", function() {
-        arrJson = localStorage.getItem("cart");
-        arr = JSON.parse(arrJson);
-        arr.push("bagel1");
-        localStorage.setItem("cart", JSON.stringify(arr))
-        alert("Bagel added to cart.");
+        if (getQuantityOfItem("bagel1") > 0) {
+            arrJson = localStorage.getItem("cart");
+            arr = JSON.parse(arrJson);
+            arr.push("bagel1");
+            localStorage.setItem("cart", JSON.stringify(arr))
+            alert("Bagel added to cart.");
+        } else {
+            alert("Sorry, we are out of Bagels");
+        }
+
     }, false);
 
     document.getElementById("bagel2cart").addEventListener("click", function() {
-        arrJson = localStorage.getItem("cart");
-        arr = JSON.parse(arrJson);
-        arr.push("bagel2");
-        localStorage.setItem("cart", JSON.stringify(arr))
-        alert("English muffin added to cart.");
+        if (getQuantityOfItem("bagel2") > 0) {
+            arrJson = localStorage.getItem("cart");
+            arr = JSON.parse(arrJson);
+            arr.push("bagel2");
+            localStorage.setItem("cart", JSON.stringify(arr))
+            alert("English muffin added to cart.");
+        } else {
+            alert("Sorry, we are out of English muffins.");
+        }
+
     }, false);
 
     document.getElementById("bagel3cart").addEventListener("click", function() {
-        arrJson = localStorage.getItem("cart");
-        arr = JSON.parse(arrJson);
-        arr.push("bagel3");
-        localStorage.setItem("cart", JSON.stringify(arr))
-        alert("Croissant added to cart.");
+        if (getQuantityOfItem("bagel3") > 0) {
+            arrJson = localStorage.getItem("cart");
+            arr = JSON.parse(arrJson);
+            arr.push("bagel3");
+            localStorage.setItem("cart", JSON.stringify(arr))
+            alert("Croissant added to cart.");
+        } else {
+            alert("Sorry, we are out of Croissants");
+        }
+
     }, false);
 }
 
@@ -364,6 +409,7 @@ function fetchInventory() {
 
 function fetchInventoryCartUpdate() {
     localStorage.setItem("cart", JSON.stringify([]));
+
     var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Inventory?maxRecords=9&view=Grid%20view";
 
     var xhr = new XMLHttpRequest();
@@ -375,7 +421,11 @@ function fetchInventoryCartUpdate() {
         if (xhr.readyState === 4) {
             console.log(xhr.status);
             localStorage.setItem("inventoryData",xhr.responseText);
-            alert("Order placed!");
+            var tip = Number(document.getElementById("inputTip").value);
+            var total = Number(localStorage.getItem("currentTotalCost")) + tip;
+            alert("Your order has been placed! Total: $" + String(total));
+            localStorage.setItem("currentPointCost", 0);
+            localStorage.setItem("currentTotalCost", 0);
             window.location.replace("menu.html");
    }};
 
