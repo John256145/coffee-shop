@@ -332,6 +332,8 @@ function orderPlaced() {
     var cartArrayJson = localStorage.getItem("cart");
     var cartArray = JSON.parse(cartArrayJson);
     var cartDct = cartToDct(cartArray);
+    var purchases = JSON.parse(localStorage.getItem("purchases"));
+
     if(cartArray.length == 0) {
         alert("Your cart is empty.");
         return;
@@ -365,8 +367,10 @@ function orderPlaced() {
             }
         };
         data["records"].push(newRecord);
+        purchases.push(item);
     }
     console.log(data);
+    localStorage.setItem("purchases", JSON.stringify(purchases));
     updateInventory(JSON.stringify(data));
 
 }
@@ -498,6 +502,7 @@ xhr.send();
 
 function fetchInventory() {
     localStorage.setItem("cart", JSON.stringify([]));
+    localStorage.setItem("purchases", JSON.stringify([]));
     var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Inventory?maxRecords=9&view=Grid%20view";
 
     var xhr = new XMLHttpRequest();
@@ -510,7 +515,6 @@ function fetchInventory() {
             console.log(xhr.status);
             localStorage.setItem("inventoryData",xhr.responseText);
             fetchUsers();
-            fetchReviews();
    }};
 
    xhr.send();
@@ -565,7 +569,8 @@ function checkIfExists(response, emailInput, passwordInput) {
         localStorage.setItem("currentUser",userId);
         localStorage.setItem("currentUserData", response);
         console.log(String(userId) + " is the userID");
-        window.location.replace("menu.html");
+        fetchReviews();
+
     } else {
         console.log("match not found");
         alert("We cannot find an account with the information you provided. Please try again.");
@@ -586,6 +591,7 @@ function loadReviewPage() {
     var reviewDiv = document.getElementById("reviewList");
     var list = document.createElement("ul");
     var itemSelection = localStorage.getItem("reviewSelection");
+    document.getElementById("itemImage").src = itemSelection+".png"
     var reviewArray = JSON.parse(localStorage.getItem("reviews")).records;
     for (const element of reviewArray) {
         if(element.fields.item == itemSelection) { //only consider reviews of the current selection
@@ -615,6 +621,7 @@ function fetchReviews() {
             console.log(xhr.status);
             console.log(xhr.responseText);
             localStorage.setItem("reviews", xhr.responseText);
+            window.location.replace("menu.html");
     }};
 
     xhr.send();
