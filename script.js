@@ -616,7 +616,7 @@ function loadReviewPage() {
 }
 
 function fetchReviews() {
-    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Reviews?maxRecords=3&view=Grid%20view";
+    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Reviews?maxRecords=100&view=Grid%20view";
 
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url);
@@ -632,6 +632,39 @@ function fetchReviews() {
     }};
 
     xhr.send();
+}
+
+function addReview() {
+    if(!document.getElementById("reviewText").value) { //if no review text
+        alert("The text box is empty.");
+        return;
+    }
+
+    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Reviews";
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", url);
+
+    xhr.setRequestHeader("Authorization", "Bearer " + airtableApiKey);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      console.log(xhr.status);
+      console.log(xhr.responseText);
+      alert("Your review has been sent.");
+      fetchReviews(); //gets the latest reviews AND sends user to menu page, same as when logging in.
+    }};
+
+    var data = `{
+        "fields": {
+            "userid": ` + localStorage.getItem("currentUser") + `,
+            "firstname": "` + localStorage.getItem("currentUserName") + `",
+            "review": "` + document.getElementById("reviewText").value + `",
+            "item": "` + localStorage.getItem("reviewSelection") + `"
+        }
+    }`;
+    xhr.send(data);
 }
 
 function addProfileData() {
