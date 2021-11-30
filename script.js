@@ -338,7 +338,7 @@ function orderPlaced() {
     var cartArray = JSON.parse(cartArrayJson);
     var cartDct = cartToDct(cartArray);
     var purchases = JSON.parse(localStorage.getItem("purchases"));
-
+    var waitTime = 0;
     if(cartArray.length == 0) {
         alert("Your cart is empty.");
         return;
@@ -373,11 +373,24 @@ function orderPlaced() {
         };
         data["records"].push(newRecord);
         purchases.push(item);
+        waitTime += itemToTime(item) * count;
     }
     console.log(data);
     localStorage.setItem("purchases", JSON.stringify(purchases));
+    localStorage.setItem("waitTime", waitTime);
     updateInventory(JSON.stringify(data));
 
+}
+
+function itemToTime(item) {
+    var inventoryData = localStorage.getItem("inventoryData");
+    var inputArrayData = JSON.parse(inventoryData).records;
+    //inputArrayData[0].fields.quantity
+    for(const element of inputArrayData) {
+        if(element.fields.item == item) {
+            return element.fields.waittime;
+        }
+    }
 }
 
 function getQuantityOfItem(itemName) {
@@ -546,7 +559,7 @@ function fetchInventoryCartUpdate() {
             } else {
                 total = Number(localStorage.getItem("currentTotalCost")) + tip; //user is not using points.
             }
-            alert("Your order has been placed! Total: $" + String(total) + ". You earned " + String(localStorage.getItem("earnedPoints")) + " points.");
+            alert("Your order has been placed! Total: $" + String(total) + ". You earned " + String(localStorage.getItem("earnedPoints")) + " points. Wait time is " + String(localStorage.getItem("waitTime")) + " minutes.");
             localStorage.setItem("currentPointCost", 0);
             localStorage.setItem("currentTotalCost", 0);
             localStorage.setItem("earnedPoints", 0);
