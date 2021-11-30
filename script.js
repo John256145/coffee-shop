@@ -606,6 +606,13 @@ function loadReviewPage() {
 
     }
     reviewDiv.appendChild(list);
+
+    //allow user to make a review if they bought the item
+    var purchases = JSON.parse(localStorage.getItem("purchases"));
+    if(purchases.includes(itemSelection)) {
+        var reviewInput = document.getElementById("reviewInput");
+        reviewInput.style.display = "block";
+    }
 }
 
 function fetchReviews() {
