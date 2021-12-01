@@ -321,8 +321,8 @@ function addCartData() {
 
 }
 
-function orderPlaced() {
-    var itemNameToId = {
+function itemNameToInternalId() {
+    var dct = {
             "coffee1" : "recoqIPWGwb6nQvuc",
             "coffee2" : "recyvLZO2NaEjFYXM",
             "coffee3" : "rec4O7jv0OWI03B8r",
@@ -333,6 +333,11 @@ function orderPlaced() {
             "bagel2" : "recVWrQmU4M7PBpNu",
             "bagel3" : "recV957czTp5DXzfX"
     };
+    return dct;
+}
+
+function orderPlaced() {
+    var itemNameToId = itemNameToInternalId();
     var data = { "records" : [] }; //will be sent to api
     var cartArrayJson = localStorage.getItem("cart");
     var cartArray = JSON.parse(cartArrayJson);
@@ -569,6 +574,24 @@ function fetchInventoryCartUpdate() {
    xhr.send();
 }
 
+function fetchInventoryUpdate() {
+    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Inventory?maxRecords=9&view=Grid%20view";
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+
+    xhr.setRequestHeader("Authorization", "Bearer " + airtableApiKey);
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            console.log(xhr.status);
+            localStorage.setItem("inventoryData",xhr.responseText);
+            location.reload();
+   }};
+
+   xhr.send();
+}
+
 function checkIfExists(response, emailInput, passwordInput) {
     var login = false;
     var sample = `{"records":[{"id":"recH49qI6naHBHYZ2","fields":{"firstname":"John","lastname":"Doe","address":"1234 North Ave","phone":"7735550000","email":"idk@example.com","userid":9,"password":"password","points":0,"creditcard":"1738","isadmin":true},"createdTime":"2021-11-27T20:59:34.000Z"}]}`;
@@ -711,6 +734,7 @@ function addProfileData() {
                 var adminData = document.getElementById("adminInfo");
                 adminData.style.display = "none";
                 document.getElementById("pointsInput").readOnly = true;
+                document.getElementById("saveButtonInventory").style.display = "none"
             } else {
                 var inventoryData = localStorage.getItem("inventoryData");
                 var inputArrayData = JSON.parse(inventoryData).records;
@@ -744,6 +768,108 @@ function toggleCC() {
     } else {
         document.getElementById("ccInput").type = "password";
     }
+}
+
+function editInventory() {
+    var coffee1 = document.getElementById("bvg1input").value;
+    var coffee2 = document.getElementById("bvg2input").value;
+    var coffee3 = document.getElementById("bvg3input").value;
+    var donut1 = document.getElementById("dnt1input").value;
+    var donut2 = document.getElementById("dnt2input").value;
+    var donut3 = document.getElementById("dnt3input").value;
+    var bagel1 = document.getElementById("bgl1input").value;
+    var bagel2 = document.getElementById("bgl2input").value;
+    var bagel3 = document.getElementById("bgl3input").value;
+
+    var itemNameToId = itemNameToInternalId();
+
+    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Inventory";
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("PATCH", url);
+
+    xhr.setRequestHeader("Authorization", "Bearer " + airtableApiKey);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function () {
+       if (xhr.readyState === 4) {
+          console.log(xhr.status);
+          console.log(xhr.responseText);
+          alert("Inventory Updated");
+          fetchInventoryUpdate();
+       }};
+
+    var data = `{
+      "records": [
+        {
+          "id": "` + itemNameToId["coffee1"] + `",
+          "fields": {
+            "item": "coffee1",
+            "quantity": ` + Number(coffee1) + `
+          }
+        },
+        {
+           "id": "` + itemNameToId["coffee2"] + `",
+          "fields": {
+            "item": "coffee2",
+            "quantity": ` + Number(coffee2) + `
+          }
+        },
+        {
+          "id": "` + itemNameToId["coffee3"] + `",
+          "fields": {
+            "item": "coffee3",
+            "quantity": ` + Number(coffee3) + `
+          }
+        },
+        {
+          "id": "` + itemNameToId["donut1"] + `",
+          "fields": {
+            "item": "donut1",
+            "quantity": ` + Number(donut1) + `
+          }
+        },
+        {
+          "id": "` + itemNameToId["donut2"] + `",
+          "fields": {
+            "item": "donut2",
+            "quantity": ` + Number(donut2) + `
+          }
+        },
+        {
+          "id": "` + itemNameToId["donut3"] + `",
+          "fields": {
+            "item": "donut3",
+            "quantity": ` + Number(donut3) + `
+          }
+        },
+        {
+          "id": "` + itemNameToId["bagel1"] + `",
+          "fields": {
+            "item": "bagel1",
+            "quantity": ` + Number(bagel1) + `
+          }
+        },
+        {
+          "id": "` + itemNameToId["bagel2"] + `",
+          "fields": {
+            "item": "bagel2",
+            "quantity": ` + Number(bagel2) + `
+          }
+        },
+        {
+          "id": "` + itemNameToId["bagel3"] + `",
+          "fields": {
+            "item": "bagel3",
+            "quantity": ` + Number(bagel3) + `
+          }
+        }
+      ]
+    }`;
+
+    xhr.send(data);
+
+
 }
 
 function editUser() {

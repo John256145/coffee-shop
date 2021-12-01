@@ -61,23 +61,42 @@
                                 </form> -->
 
                                 <div class="container" id = "adminInfo">
-                                    <h6></br>STOCK:</h6>
-                                    <h6>Hot Coffee: XBVG1</h6>
-                                    <h6>Iced Tea: XBVG2</h6>
-                                    <h6>Iced Coffee: XBVG3</h6>
-                                    <h6>Vanilla Donuts: XDNT1</h6>
-                                    <h6>Strawberry Donuts: XDNT2</h6>
-                                    <h6>Chocolate Donuts: XDNT3</h6>
-                                    <h6>Bagels: XBGL1</h6>
-                                    <h6>English Muffins: XBGL2</h6>
-                                    <h6>Croissants: XBGL3</h6>
+                                    <h6 class="card-subtitle mb-2 text-muted"></br>STOCK:</h6>
+                                    <h6 class="card-subtitle mb-2 text-muted">Hot Coffee:
+                                        <input type="text" id="bvg1input" value="XBVG1">
+                                    </h6>
+                                    <h6 class="card-subtitle mb-2 text-muted">Iced Tea:
+                                        <input type="text" id="bvg2input" value="XBVG2">
+                                    </h6>
+                                    <h6 class="card-subtitle mb-2 text-muted">Iced Coffee:
+                                        <input type="text" id="bvg3input" value="XBVG3">
+                                    </h6>
+                                    <h6 class="card-subtitle mb-2 text-muted">Vanilla Donuts:
+                                        <input type="text" id="dnt1input" value="XDNT1">
+                                    </h6>
+                                    <h6 class="card-subtitle mb-2 text-muted">Strawberry Donuts:
+                                        <input type="text" id="dnt2input" value="XDNT2">
+                                    </h6>
+                                    <h6 class="card-subtitle mb-2 text-muted">Chocolate Donuts:
+                                        <input type="text" id="dnt3input" value="XDNT3">
+                                    </h6>
+                                    <h6 class="card-subtitle mb-2 text-muted">Bagels:
+                                        <input type="text" id="bgl1input" value="XBGL1">
+                                    </h6>
+                                    <h6 class="card-subtitle mb-2 text-muted">English Muffins:
+                                        <input type="text" id="bgl2input" value="XBGL2">
+                                    </h6>
+                                    <h6 class="card-subtitle mb-2 text-muted">Croissants:
+                                        <input type="text" id="bgl3input" value="XBGL3">
+                                    </h6>
 
                                     <!-- <h6></br>Feedback:</h6>
                                     <h6>no feedback</h6> -->
                                 </div>
                             </br>
                                 <a href="index.html"><button type="submit" class="btn btn-primary" onclick="signOut()">Sign out</button></a>
-                                <button id = "saveButton" class="btn btn-secondary" onclick="editUser()">Save</button>
+                                <button id = "saveButton" class="btn btn-secondary" onclick="editUser()">Save Profile Changes</button>
+                                <button id = "saveButtonInventory" class="btn btn-secondary" onclick="editInventory()">Save Inventory Changes</button>
                         </div>
                     </div>
                 </div>
