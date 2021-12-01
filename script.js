@@ -504,18 +504,18 @@ function fetchUsers() {
     var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Users?maxRecords=3&view=Grid%20view";
     var email = document.getElementById("exampleInputEmail1").value;
     var password = document.getElementById("exampleInputPassword1").value;
-var xhr = new XMLHttpRequest();
-xhr.open("GET", url);
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
 
-xhr.setRequestHeader("Authorization", "Bearer " + airtableApiKey);
+    xhr.setRequestHeader("Authorization", "Bearer " + airtableApiKey);
 
-xhr.onreadystatechange = function () {
-   if (xhr.readyState === 4) {
-      console.log(xhr.status);
-      checkIfExists(xhr.responseText, email, password);
-   }};
+    xhr.onreadystatechange = function () {
+       if (xhr.readyState === 4) {
+          console.log(xhr.status);
+          checkIfExists(xhr.responseText, email, password);
+       }};
 
-xhr.send();
+    xhr.send();
 }
 
 function fetchInventory() {
@@ -704,10 +704,13 @@ function addProfileData() {
             document.body.innerHTML = document.body.innerHTML.replace(/XAD/g, String(element.fields.address));
             document.body.innerHTML = document.body.innerHTML.replace(/XPN/g, String(element.fields.phone));
             document.body.innerHTML = document.body.innerHTML.replace(/XEM/g, String(element.fields.email));
+            document.body.innerHTML = document.body.innerHTML.replace(/XPW/g, String(element.fields.password));
+            document.body.innerHTML = document.body.innerHTML.replace(/XCC/g, String(element.fields.creditcard));
             document.body.innerHTML = document.body.innerHTML.replace(/XPT/g, String(element.fields.points));
             if (!isAdmin) {
                 var adminData = document.getElementById("adminInfo");
                 adminData.style.display = "none";
+                document.getElementById("pointsInput").readOnly = true;
             } else {
                 var inventoryData = localStorage.getItem("inventoryData");
                 var inputArrayData = JSON.parse(inventoryData).records;
@@ -724,6 +727,93 @@ function addProfileData() {
 
         }
     }
+
+}
+
+function togglePW() {
+    if(document.getElementById("passwordInput").type == "password") {
+        document.getElementById("passwordInput").type = "text";
+    } else {
+        document.getElementById("passwordInput").type = "password";
+    }
+}
+
+function toggleCC() {
+    if(document.getElementById("ccInput").type == "password") {
+        document.getElementById("ccInput").type = "text";
+    } else {
+        document.getElementById("ccInput").type = "password";
+    }
+}
+
+function editUser() {
+    var fname = document.getElementById("fnameInput").value;
+    var lname = document.getElementById("lnameInput").value;
+    var address = document.getElementById("addressInput").value;
+    var phone = document.getElementById("phoneInput").value;
+    var email = document.getElementById("emailInput").value;
+    var password = document.getElementById("passwordInput").value;
+    var cc = document.getElementById("ccInput").value;
+    var points = Number(document.getElementById("pointsInput").value);
+
+    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Users/" + getInternalUserId();
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("PATCH", url);
+
+    xhr.setRequestHeader("Authorization", "Bearer " + airtableApiKey);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            console.log(xhr.status);
+            console.log(xhr.responseText);
+            alert("Saved your changes.");
+            refreshUsers();
+        }};
+
+    var data = `{
+        "fields": {
+            "firstname": "` + fname + `",
+            "lastname": "` + lname + `",
+            "address": "` + address + `",
+            "phone": "` + phone + `",
+            "email": "` + email + `",
+            "password": "` + password + `",
+            "creditcard": "` + cc + `",
+            "points": ` + points + `
+        }
+    }`;
+
+    xhr.send(data);
+}
+
+function getInternalUserId() {
+    var arr = JSON.parse(localStorage.getItem("currentUserData")).records;
+    var userID = localStorage.getItem("currentUser");
+    for (const element of arr) {
+        if (element.fields.userid == userID) {
+            return element.id;
+        }
+    }
+}
+
+function refreshUsers() {
+    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Users?maxRecords=3&view=Grid%20view";
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+
+    xhr.setRequestHeader("Authorization", "Bearer " + airtableApiKey);
+
+    xhr.onreadystatechange = function () {
+       if (xhr.readyState === 4) {
+          console.log(xhr.status);
+          console.log(xhr.responseText);
+          localStorage.setItem("currentUserData", xhr.responseText);
+          location.reload();
+       }};
+
+    xhr.send();
 }
 
 function addUser(firstName, lastName, email, password, cc, phoneNumber, address, isAdmin) {

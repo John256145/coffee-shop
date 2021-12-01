@@ -16,6 +16,7 @@
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
         <script src="script.js"></script>
+        <script src="api.js"></script>
     <div class="container-fluid" style="background-image: url('background.png');">
         <div class="row">
             <div class="col-12 p-0">
@@ -26,13 +27,27 @@
                                 <img src="backsmall.png" class="rounded float-end" alt="Back Image">
                             </a>
                             <h1 class="card-title">PROFILE</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">First Name: XFN</h6>
-                                <h6 class="card-subtitle mb-2 text-muted">Last Name: XLN</h6>
-                                <h6 class="card-subtitle mb-2 text-muted">Address: XAD</h6>
-                                <h6 class="card-subtitle mb-2 text-muted">Phone: XPN</h6>
-                                <h6 class="card-subtitle mb-2 text-muted">Email: XEM</h6>
-                                <h6 class="card-subtitle mb-2 text-muted">Available Points: XPT</h6>
-
+                                <h6 class="card-subtitle mb-2 text-muted">First Name:
+                                    <input type="text" id="fnameInput" value="XFN"></h6>
+                                <h6 class="card-subtitle mb-2 text-muted">Last Name:
+                                    <input type="text" id="lnameInput" value="XLN"></h6>
+                                <h6 class="card-subtitle mb-2 text-muted">Address:
+                                    <input type="text" id="addressInput" value="XAD"></h6>
+                                <h6 class="card-subtitle mb-2 text-muted">Phone:
+                                    <input type="text" id="phoneInput" value="XPN"></h6>
+                                <h6 class="card-subtitle mb-2 text-muted">Email:
+                                    <input type="text" id="emailInput" value="XEM"></h6>
+                                <h6 class="card-subtitle mb-2 text-muted">Password:
+                                    <input type="password" id="passwordInput" value="XPW">
+                                    <button id = "togglePW" onclick="togglePW()">Show/Hide</button>
+                                </h6>
+                                <h6 class="card-subtitle mb-2 text-muted">Credit Card Number:
+                                    <input type="password" id="ccInput" value="XCC">
+                                    <button id = "toggleCC" onclick="toggleCC()">Show/Hide</button>
+                                </h6>
+                                <h6 class="card-subtitle mb-2 text-muted">Available Points:
+                                    <input type="text" id="pointsInput" value="XPT"></h6>
+                                <!-- document.getElementById("staticEmail").readOnly = false; -->
                                 <!-- <h6 class="card-subtitle mb-2 text-muted">Nearby Shops: 249 West Dank Ave, 5298 North
                                     Yeet Street</h6> -->
                                 <!-- <form>
@@ -62,6 +77,7 @@
                                 </div>
                             </br>
                                 <a href="index.html"><button type="submit" class="btn btn-primary" onclick="signOut()">Sign out</button></a>
+                                <button id = "saveButton" class="btn btn-secondary" onclick="editUser()">Save</button>
                         </div>
                     </div>
                 </div>
