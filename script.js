@@ -594,7 +594,8 @@ function recordSale(total) {
        if (xhr.readyState === 4) {
           console.log(xhr.status);
           console.log(xhr.responseText);
-          window.location.replace("menu.html");
+          // window.location.replace("menu.html");
+          fetchSales(); //will get sales data and then send user to menu, just as in last step of login
        }};
 
     var data = `{
