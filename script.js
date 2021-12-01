@@ -568,10 +568,56 @@ function fetchInventoryCartUpdate() {
             localStorage.setItem("currentPointCost", 0);
             localStorage.setItem("currentTotalCost", 0);
             localStorage.setItem("earnedPoints", 0);
-            window.location.replace("menu.html");
+            recordSale(total);
+
    }};
 
    xhr.send();
+}
+
+//runs after fetchInventoryCartUpdate
+function recordSale(total) {
+    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Sales";
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", url);
+
+    xhr.setRequestHeader("Authorization", "Bearer " + airtableApiKey);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function () {
+       if (xhr.readyState === 4) {
+          console.log(xhr.status);
+          console.log(xhr.responseText);
+          window.location.replace("menu.html");
+       }};
+
+    var data = `{
+      "fields": {
+        "userid": ` + Number(localStorage.getItem("currentUser")) + `,
+        "price": ` + total + `
+      }
+    }`;
+
+    xhr.send(data);
+}
+
+//called after fetchReviews(), last step before entering the menu at login
+function fetchSales() {
+    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Sales?maxRecords=3&view=Grid%20view";
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+    xhr.setRequestHeader("Authorization", "Bearer " + airtableApiKey);
+
+    xhr.onreadystatechange = function () {
+       if (xhr.readyState === 4) {
+          console.log(xhr.status);
+          console.log(xhr.responseText);
+          localStorage.setItem("sales", xhr.responseText);
+          window.location.replace("menu.html");
+       }};
+
+    xhr.send();
+
 }
 
 function fetchInventoryUpdate() {
@@ -675,7 +721,8 @@ function fetchReviews() {
             console.log(xhr.status);
             console.log(xhr.responseText);
             localStorage.setItem("reviews", xhr.responseText);
-            window.location.replace("menu.html");
+            // window.location.replace("menu.html");
+            fetchSales();
     }};
 
     xhr.send();
@@ -747,6 +794,15 @@ function addProfileData() {
                 document.body.innerHTML = document.body.innerHTML.replace(/XBGL1/g, String(inputArrayData[6].fields.quantity));
                 document.body.innerHTML = document.body.innerHTML.replace(/XBGL2/g, String(inputArrayData[7].fields.quantity));
                 document.body.innerHTML = document.body.innerHTML.replace(/XBGL3/g, String(inputArrayData[8].fields.quantity));
+
+                var salesData = localStorage.getItem("sales");
+                var salesDataArray = JSON.parse(salesData).records;
+                totalPrice = 0;
+                for (const element of salesDataArray) {
+                     totalPrice += element.fields.price;
+                }
+                document.getElementById("totalSales").innerText += " $" + totalPrice;
+                document.getElementById("totalPurchases").innerText += " " + salesDataArray.length;
             }
 
         }
