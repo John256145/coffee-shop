@@ -564,7 +564,13 @@ function fetchInventoryCartUpdate() {
             } else {
                 total = Number(localStorage.getItem("currentTotalCost")) + tip; //user is not using points.
             }
-            alert("Your order has been placed! Total: $" + String(total) + ". You earned " + String(localStorage.getItem("earnedPoints")) + " points. Wait time is " + String(localStorage.getItem("waitTime")) + " minutes.");
+            var extraChargeText = "";
+            if(document.getElementById("deliveryOption").checked) {
+                total += 3; //extra charge for delivery
+                extraChargeText = " You have been charged an extra $3 for delivery.";
+            }
+
+            alert("Your order has been placed! Total: $" + String(total) + ". You earned " + String(localStorage.getItem("earnedPoints")) + " points. Wait time is " + String(localStorage.getItem("waitTime")) + " minutes." + extraChargeText);
             localStorage.setItem("currentPointCost", 0);
             localStorage.setItem("currentTotalCost", 0);
             localStorage.setItem("earnedPoints", 0);
@@ -802,6 +808,7 @@ function addProfileData() {
                 for (const element of salesDataArray) {
                      totalPrice += element.fields.price;
                 }
+                totalPrice = Math.round(totalPrice * 100) / 100;
                 document.getElementById("totalSales").innerText += " $" + totalPrice;
                 document.getElementById("totalPurchases").innerText += " " + salesDataArray.length;
             }
