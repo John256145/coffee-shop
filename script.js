@@ -812,6 +812,10 @@ function addProfileData() {
                 totalPrice = Math.round(totalPrice * 100) / 100;
                 document.getElementById("totalSales").innerText += " $" + totalPrice;
                 document.getElementById("totalPurchases").innerText += " " + salesDataArray.length;
+                document.getElementById("totalUsers").innerText += " " + inputArray.length;
+
+                var reviewArray = JSON.parse(localStorage.getItem("reviews")).records;
+                document.getElementById("totalReviews").innerText += " " + reviewArray.length;
             }
 
         }
