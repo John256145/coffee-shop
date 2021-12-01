@@ -10,7 +10,7 @@
     <title>Cofveve</title>
 </head>
 
-<body>
+<body onload="signUpPage()">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
@@ -21,7 +21,7 @@
             <div class="col-12 p-0">
                 <div class="min-vh-100 text-center m-0 d-flex flex-column justify-content-center align-items-center">
                     <div class="card" style="width: 50rem;">
-                        <a href="index.html">
+                        <a href="#" id = "backButton" onclick="backPressed()">
                             <img src="backsmall.png" class="rounded float-end" alt="Back Image">
                         </a>
                         <div class="card-body">
@@ -80,8 +80,8 @@
                                         <input type="text" class="form-control" id="inputAddress">
                                     </div>
                                 </div>
-                                <fieldset class="row mb-3">
-                                    <legend class="col-form-label col-sm-2 pt-0">Radios</legend>
+                                <fieldset class="row mb-3" id = "userCreationType">
+                                    <legend class="col-form-label col-sm-2 pt-0">User Type</legend>
                                     <div class="col-sm-10">
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="gridRadios"
@@ -100,7 +100,7 @@
                                     </div>
                                 </fieldset>
                             </form>
-                            <a href="index.html"><button type="submit" class="btn btn-primary" onclick="addUserfromForm()">Sign Up</button></a>
+                            <a href="#"><button type="submit" class="btn btn-primary" onclick="addUserfromForm()">Sign Up</button></a>
                         </div>
                     </div>
                 </div>

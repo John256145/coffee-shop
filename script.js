@@ -446,7 +446,7 @@ function setUserPoints(points) {
 }
 
 function refreshUserData() {
-    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Users?maxRecords=3&view=Grid%20view";
+    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Users?maxRecords=100&view=Grid%20view";
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url);
     xhr.setRequestHeader("Authorization", "Bearer " + airtableApiKey);
@@ -506,7 +506,7 @@ function addUserfromForm() {
 }
 
 function fetchUsers() {
-    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Users?maxRecords=3&view=Grid%20view";
+    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Users?maxRecords=100&view=Grid%20view";
     var email = document.getElementById("exampleInputEmail1").value;
     var password = document.getElementById("exampleInputPassword1").value;
     var xhr = new XMLHttpRequest();
@@ -603,7 +603,7 @@ function recordSale(total) {
 
 //called after fetchReviews(), last step before entering the menu at login
 function fetchSales() {
-    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Sales?maxRecords=3&view=Grid%20view";
+    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Sales?maxRecords=100&view=Grid%20view";
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url);
     xhr.setRequestHeader("Authorization", "Bearer " + airtableApiKey);
@@ -981,7 +981,7 @@ function getInternalUserId() {
 }
 
 function refreshUsers() {
-    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Users?maxRecords=3&view=Grid%20view";
+    var url = "https://api.airtable.com/v0/appO1nRBNkCmnuuCB/Users?maxRecords=100&view=Grid%20view";
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url);
 
@@ -1011,6 +1011,10 @@ xhr.onreadystatechange = function () {
    if (xhr.readyState === 4) {
       console.log(xhr.status);
       console.log(xhr.responseText);
+      if(localStorage.length == 0) {
+          //no user exists
+          window.location.replace("index.html");
+      }
    }};
 
 var data = `{
@@ -1032,4 +1036,20 @@ var data = `{
 }`;
 
 xhr.send(data);
+}
+
+function signUpPage() {
+    if(localStorage.length == 0) {
+        //user is not an admin
+        document.getElementById("userCreationType").style.display = "none";
+    }
+}
+
+function backPressed() {
+    if(localStorage.length == 0) {
+        //no user
+        window.location.replace("index.html");
+    } else {
+        window.location.replace("profile.html");
+    }
 }
