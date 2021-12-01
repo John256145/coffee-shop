@@ -782,6 +782,7 @@ function addProfileData() {
                 adminData.style.display = "none";
                 document.getElementById("pointsInput").readOnly = true;
                 document.getElementById("saveButtonInventory").style.display = "none"
+                document.getElementById("createUserButton").style.display = "none"
             } else {
                 var inventoryData = localStorage.getItem("inventoryData");
                 var inputArrayData = JSON.parse(inventoryData).records;
